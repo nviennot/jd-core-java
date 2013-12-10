@@ -28,14 +28,24 @@ public class Decompiler {
         ZipInputStream zip = new ZipInputStream(new FileInputStream(jarPath));
         ZipEntry ze;
         Map<String, String> pathToSrc = new HashMap<String, String>();
+        CaseInsensitiveFilePathSet caseInsensitiveSet = new CaseInsensitiveFilePathSet();
 
         while ((ze = zip.getNextEntry()) != null ) {
             String entryName = ze.getName();
             if (entryName.endsWith(".class")) {
                 String classPath = entryName.replaceAll("\\$.*\\.class$", ".class");
-                String javaPath  = classPath.replaceAll("\\.class$", ".java");
-                if (!pathToSrc.containsKey(javaPath))
+                String javaPath = classPath.replaceAll("\\.class$", ".java");
+                if (!pathToSrc.containsKey(javaPath)) {
+                    // If file system is not case sensitive, we should case insensitive check as well.
+                    // Otherwise, existing file is overwritten by another file with the same name and different case.
+                    if (!FileSystem.isCaseSensitive()) {
+                        if (caseInsensitiveSet.containsIgnoreCase(javaPath)) {
+                            javaPath = caseInsensitiveSet.getNumberedName(javaPath);
+                        }
+                    }
+                    caseInsensitiveSet.add(javaPath);
                     pathToSrc.put(javaPath, decompiler.decompile(jarPath, classPath));
+                }
             }
         }
 
