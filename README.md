@@ -64,7 +64,7 @@ new jd.core.Decompiler.decompileToDir("compiled.jar", "out_dir");
 From the command line:
 ```shell
 # Outputs all the sources of compiled.jar into out_dir
-java -jar jd-core-java.jar <compiled.jar> <out_dir>
+java -jar jd-core-java-1.0.jar <compiled.jar> <out_dir>
 ```
 
 License
