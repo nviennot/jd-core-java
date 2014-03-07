@@ -37,7 +37,7 @@ publish a library.
 Building will download the JD-IntelliJ plugin from bitbucket, and copy the
 libjd-intellij.so library in the root directory of the project.
 
-Once the project is built, the two files jd-core-java-1.0.jar libjd-intellij.so
+Once the project is built, the two files jd-core-java-1.1.jar libjd-intellij.so
 will be in the root directory of the project.
 
 Usage
@@ -64,7 +64,7 @@ new jd.core.Decompiler.decompileToDir("compiled.jar", "out_dir");
 From the command line:
 ```shell
 # Outputs all the sources of compiled.jar into out_dir
-java -jar jd-core-java-1.0.jar <compiled.jar> <out_dir>
+java -jar jd-core-java-1.1.jar <compiled.jar> <out_dir>
 ```
 
 License
