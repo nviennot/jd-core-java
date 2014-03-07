@@ -1,13 +1,12 @@
 JD-Core-java
 ============
 
-JD-Core-java is a thin-wrapper for the [Java Decompiler](http://java.decompiler.free.fr/).
+JD-Core-java is a thin-wrapper for the [Java Decompiler](http://jd.benow.ca/).
 
 This is hack around the IntelliJ IDE plugin. It fakes the interfaces of the
 IDE, and provides access to JD-Core.
 
-Since the Author of JD-Core is not willing to provide a library, as seen on
-[this thread](http://java.decompiler.free.fr/?q=node/116), and we all want
+Since the Author of JD-Core is not willing to provide a library, and we all want
 to batch decompilation, this is pretty much our only option.
 
 I hope this will motivate the author to release a proper library.
