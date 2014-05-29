@@ -46,18 +46,18 @@ Programmatically:
 
 ```java
 /* Returns the source of SomeClass from compiled.jar as a String */
-new jd.core.Decompiler.decompile("compiled.jar", "com/namespace/SomeClass.class");
+new jd.core.Decompiler().decompile("compiled.jar", "com/namespace/SomeClass.class");
 
 /*
  * Returns the sources of all the classes in compiled.jar as a Map<String, String>
  * where the key is the class name (full path) and the value is the source
  */
-new jd.core.Decompiler.decompile("compiled.jar");
+new jd.core.Decompiler().decompile("compiled.jar");
 
 /*
  * Returns the number of classes decompiled and saved into out_dir
  */
-new jd.core.Decompiler.decompileToDir("compiled.jar", "out_dir");
+new jd.core.Decompiler().decompileToDir("compiled.jar", "out_dir");
 ```
 
 From the command line:
