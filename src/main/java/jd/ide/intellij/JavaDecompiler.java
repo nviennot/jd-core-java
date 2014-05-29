@@ -7,7 +7,7 @@ public class JavaDecompiler {
             path = JavaDecompiler.class.getProtectionDomain().getCodeSource().getLocation().getPath();
             path = java.net.URLDecoder.decode(path, "UTF-8");
             path = new java.io.File(path).getParent();
-            System.load(path + "/libjd-intellij.so");
+            System.load(path + "/libjd-intellij.jnilib");
         } catch (Exception e) {
             throw new IllegalStateException("Something got wrong when loading the Java Decompiler native lib at " + path);
         }
