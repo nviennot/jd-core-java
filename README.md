@@ -58,6 +58,11 @@ From the command line:
 java -jar jd-core-java-1.2.jar <compiled.jar> <out_dir>
 ```
 
+Contributors
+------------
+
+[Leslie Hoare](https://github.com/lesleh) wrote the cross platform and self contrained jar code.
+
 License
 -------
 
