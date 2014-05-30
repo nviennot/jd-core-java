@@ -20,24 +20,16 @@ JD supports:
 - Windows 32/64-bit
 - Mac OSX 32/64-bit on x86 hardware
 
-But this wrapper only supports Linux 64-bit. Please ask if you want more, or
-better, make a pull request.
-
 Build
 -----
 
-Simply use:
+Clone the repository and run <code>./gradlew assemble</code>.
+This will download the necessary native libraries from the JD Intellij
+repository on Bitbucket, compile the wrapper code, and generate a jar file
+containing both in the <code>build/libs</code> directory.
 
-    make
-
-I do not include the JD-Core library since the author of JD does not want to
-publish a library.
-
-Building will download the JD-IntelliJ plugin from bitbucket, and copy the
-libjd-intellij.so library in the root directory of the project.
-
-Once the project is built, the two files jd-core-java-1.1.jar libjd-intellij.so
-will be in the root directory of the project.
+This is a self-contained jar that you may include in your own Java project, or
+alternatively you may run it from the command line.
 
 Usage
 ------
@@ -63,7 +55,7 @@ new jd.core.Decompiler().decompileToDir("compiled.jar", "out_dir");
 From the command line:
 ```shell
 # Outputs all the sources of compiled.jar into out_dir
-java -jar jd-core-java-1.1.jar <compiled.jar> <out_dir>
+java -jar jd-core-java-1.2.jar <compiled.jar> <out_dir>
 ```
 
 License
