@@ -67,3 +67,6 @@ nb-configuration.xml
 # Misc files #
 ##############
 *.bak
+
+# Gradle wrapper #
+!/gradle/wrapper/gradle-wrapper.jar
