@@ -1,29 +1,37 @@
 package jd.ide.intellij;
 
+import com.jd.util.NativeUtils;
+
 public class JavaDecompiler {
     static {
-        String path = "";
         try {
-            path = JavaDecompiler.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-            path = java.net.URLDecoder.decode(path, "UTF-8");
-            path = new java.io.File(path).getParent();
-            System.load(path + "/libjd-intellij" + getLibraryExtension());
-        } catch (Exception e) {
-            throw new IllegalStateException("Something got wrong when loading the Java Decompiler native lib at " + path);
+            NativeUtils.loadLibraryFromJar(getLibraryPath());
+        } catch(Exception e) {
+            throw new RuntimeException("Failed to load the native library", e);
         }
     }
 
-    private static String getLibraryExtension() {
+    private static String getLibraryPath() {
+        // TODO Detect 32/64 bit and load the appropriate library
+        String os, arch, ext;
+
+        arch = "x86_64"; // FIXME
+
         String platform = System.getProperty("os.name").toLowerCase();
         if(isWindows(platform)) {
-            return ".dll";
+            os = "win32";
+            ext = "dll";
         } else if(isMac(platform)) {
-            return ".jnilib";
+            os = "macosx";
+            ext = "jnilib";
         } else if(isLinux(platform)) {
-            return ".so";
+            os = "linux";
+            ext = "so";
         } else {
             throw new RuntimeException("Uknown platform.");
         }
+
+        return String.format("/META-INF/nativelib/%s/%s/libjd-intellij.%s", os, arch, ext);
     }
 
     private static boolean isWindows(String os) {
