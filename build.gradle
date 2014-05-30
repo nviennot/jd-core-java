@@ -1,5 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'application'
+
+mainClassName = "jd.core.Main"
 
 archivesBaseName = 'jd-core-java'
 version = '1.2'
@@ -20,8 +23,11 @@ if(new File(projectDir, 'jd-intellij').exists()) {
 jar {
 	dependsOn getNativeLibs
 	metaInf {
-    	from "jd-intellij/src/main/native"
-    }
+		from "jd-intellij/src/main/native"
+	}
+	manifest {
+		attributes 'Main-Class': mainClassName
+	}
 }
 
 clean {
