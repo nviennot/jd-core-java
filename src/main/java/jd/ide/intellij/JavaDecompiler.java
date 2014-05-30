@@ -12,10 +12,9 @@ public class JavaDecompiler {
     }
 
     private static String getLibraryPath() {
-        // TODO Detect 32/64 bit and load the appropriate library
         String os, arch, ext;
 
-        arch = "x86_64"; // FIXME
+        arch = getArch();
 
         String platform = System.getProperty("os.name").toLowerCase();
         if(isWindows(platform)) {
@@ -32,6 +31,17 @@ public class JavaDecompiler {
         }
 
         return String.format("/META-INF/nativelib/%s/%s/libjd-intellij.%s", os, arch, ext);
+    }
+
+    private static String getArch() {
+        String arch = System.getProperty("os.arch");
+        if("x86".equals(arch)) {
+            return "x86";
+        } else if("amd64".equals(arch) || "x86_64".equals(arch)) {
+            return "x86_64";
+        }
+
+        throw new RuntimeException("Unknown architecture, found " + arch);
     }
 
     private static boolean isWindows(String os) {
