@@ -39,7 +39,9 @@ public class JavaDecompiler {
             return "x86";
         } else if("amd64".equals(arch) || "x86_64".equals(arch)) {
             return "x86_64";
-        }
+        } else if("i386".equals(arch)) {
+				return "x86";
+		  }
 
         throw new RuntimeException("Unknown architecture, found " + arch);
     }
