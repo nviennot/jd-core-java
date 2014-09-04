@@ -1,6 +1,7 @@
 package jd.ide.intellij;
 
 import com.jd.util.NativeUtils;
+import java.io.InputStream;
 
 public class JavaDecompiler {
     static {
@@ -12,6 +13,10 @@ public class JavaDecompiler {
     }
 
     private static String getLibraryPath() {
+        String path = "/%s/%s/libjd-intellij.%s";
+        String nativelibPath = "/META-INF/nativelib";
+        String ideRunningNativelibPath = "./jd-intellij/src/main/native/nativelib/";
+
         String os, arch, ext;
 
         arch = getArch();
@@ -19,8 +24,7 @@ public class JavaDecompiler {
         String platform = System.getProperty("os.name").toLowerCase();
         if(isWindows(platform)) {
             os = "win32";
-            ext = "dll";
-        } else if(isMac(platform)) {
+            ext = "dll"; } else if(isMac(platform)) {
             os = "macosx";
             ext = "jnilib";
         } else if(isLinux(platform)) {
@@ -30,7 +34,17 @@ public class JavaDecompiler {
             throw new RuntimeException("Uknown platform.");
         }
 
-        return String.format("/META-INF/nativelib/%s/%s/libjd-intellij.%s", os, arch, ext);
+        path = String.format(path, os, arch, ext);
+
+        nativelibPath += path;
+        ideRunningNativelibPath += path;
+
+        InputStream is = NativeUtils.class.getResourceAsStream(nativelibPath);
+        if (is != null) {
+            return nativelibPath;
+        } else {
+            return ideRunningNativelibPath;
+        }
     }
 
     private static String getArch() {

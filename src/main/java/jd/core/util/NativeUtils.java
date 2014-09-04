@@ -35,9 +35,6 @@ public class NativeUtils {
      */
     public static void loadLibraryFromJar(String path) throws IOException {
  
-        if (!path.startsWith("/")) {
-            throw new IllegalArgumentException("The path to be absolute (start with '/').");
-        }
  
         // Obtain filename from path
         String[] parts = path.split("/");
@@ -72,9 +69,15 @@ public class NativeUtils {
         // Open and check input stream
         InputStream is = NativeUtils.class.getResourceAsStream(path);
         if (is == null) {
-            throw new FileNotFoundException("File " + path + " was not found inside JAR.");
+          try {
+            System.load(String.valueOf(new File(path).getAbsoluteFile()));
+          } catch (Exception e) {
+            e.printStackTrace();
+            throw new FileNotFoundException("File " + new File(path).getAbsoluteFile() + " was not found inside JAR.");
+          }
+          return;
         }
- 
+
         // Open output stream and copy data between source file in JAR and the temporary file
         OutputStream os = new FileOutputStream(temp);
         try {
