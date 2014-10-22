@@ -31,5 +31,5 @@ jar {
 }
 
 clean {
-	delete 'jd-intelli'
+	delete 'jd-intellij'
 }
