@@ -38,7 +38,7 @@ Programmatically:
 
 ```java
 /* Returns the source of SomeClass from compiled.jar as a String */
-new jd.core.Decompiler().decompile("compiled.jar", "com/namespace/SomeClass.class");
+new jd.core.Decompiler().decompileClass("compiled.jar", "com/namespace/SomeClass.class");
 
 /*
  * Returns the sources of all the classes in compiled.jar as a Map<String, String>
@@ -55,8 +55,13 @@ new jd.core.Decompiler().decompileToDir("compiled.jar", "out_dir");
 From the command line:
 ```shell
 # Outputs all the sources of compiled.jar into out_dir
-java -jar jd-core-java-1.2.jar <compiled.jar> <out_dir>
+java -jar jd-core-java-1.2.jar [options] <compiled.jar> [<destination>]
+Options:
+    -z - save sources into a zip file
+    -n - add line numbers into sources; (false by default)
+    -r - not realign line numbers (true by default)
 ```
+
 
 Contributors
 ------------
