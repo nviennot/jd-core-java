@@ -13,28 +13,32 @@ public class JavaDecompiler {
     }
 
     private static String getLibraryPath() {
-        String path = "/%s/%s/libjd-intellij.%s";
+        String path = "/%s/%s/%s.%s";
         String nativelibPath = "/META-INF/nativelib";
         String ideRunningNativelibPath = "./jd-intellij/src/main/native/nativelib/";
 
-        String os, arch, ext;
+        String os, arch, ext, base;
 
         arch = getArch();
 
         String platform = System.getProperty("os.name").toLowerCase();
         if(isWindows(platform)) {
             os = "win32";
-            ext = "dll"; } else if(isMac(platform)) {
+            base = "jd-intellij";
+            ext = "dll";
+        } else if(isMac(platform)) {
             os = "macosx";
+            base = "libjd-intellij";
             ext = "jnilib";
         } else if(isLinux(platform)) {
             os = "linux";
+            base = "libjd-intellij";
             ext = "so";
         } else {
             throw new RuntimeException("Uknown platform.");
         }
 
-        path = String.format(path, os, arch, ext);
+        path = String.format(path, os, arch, base, ext);
 
         nativelibPath += path;
         ideRunningNativelibPath += path;
