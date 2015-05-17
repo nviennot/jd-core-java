@@ -13,7 +13,7 @@ def JD_INTELLIJ_REPO_URL = 'https://bitbucket.org/bric3/jd-intellij'
 // Fetch the native libraries
 task getNativeLibs(type: Exec) {
 	workingDir projectDir
-	commandLine 'hg', 'clone', JD_INTELLIJ_REPO_URL
+	commandLine 'hg', 'clone', JD_INTELLIJ_REPO_URL, '-r', 'version-0.6'
 }
 
 if(new File(projectDir, 'jd-intellij').exists()) {
