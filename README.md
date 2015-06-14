@@ -71,9 +71,6 @@ Contributors
 License
 -------
 
-JD-Core-java is released under the MIT license.
+JD-Core-java is released under the GPLv3 License.
 
-JD-IntelliJ is free for non-commercial use. This means that JD-IntelliJ shall
-not be included or embedded into commercial software products. Nevertheless,
-this project may be freely used for personal needs in a commercial or
-non-commercial environments.
+JD-Core, JD-GUI & JD-Eclipse are open source projects released under the GPLv3 License.
