@@ -3,6 +3,7 @@ package jd.core;
 import java.io.*;
 import java.util.Scanner;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import java.util.Map;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ public class Decompiler {
     }
 
     public int decompile(String jarPath, String outPath) throws DecompilerException, IOException {
-        Map<String, String> pathToSrc = decompile(jarPath);
+        Map<String, ByteArrayOutputStream> pathToSrc = decompile(jarPath);
 
         if (outPath == null) {
           outPath = jarPath.replaceAll("\\.jar$", "") + ".src";
@@ -35,26 +36,32 @@ public class Decompiler {
         }
     }
 
-    public int decompileToDir(String outDir, Map<String, String> pathToSrc) throws FileNotFoundException {
-        for (Map.Entry<String, String> entry : pathToSrc.entrySet()) {
+    public int decompileToDir(String outDir, Map<String, ByteArrayOutputStream> pathToSrc) throws IOException {
+        for (Map.Entry<String, ByteArrayOutputStream> entry : pathToSrc.entrySet()) {
             String fileName = entry.getKey();
             File file = new File(outDir, fileName);
             file.getParentFile().mkdirs();
-            PrintWriter out = new PrintWriter(file);
-            out.print(entry.getValue());
-            out.close();
+            
+            ByteArrayOutputStream os = entry.getValue();
+
+            FileOutputStream out = new FileOutputStream(file);
+			os.writeTo(out);
+			out.close();
+
         }
         return pathToSrc.size();
     }
 
-    public int decompileToZip(String zipName, Map<String, String> entries) throws IOException {
+    public int decompileToZip(String zipName, Map<String, ByteArrayOutputStream> entries) throws IOException {
         ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(zipName));
-        PrintWriter printOut = new PrintWriter(zipOut);
 
-        for(Map.Entry<String, String> entry : entries.entrySet()) {
+        for(Map.Entry<String, ByteArrayOutputStream> entry : entries.entrySet()) {
             zipOut.putNextEntry(new ZipEntry(entry.getKey()));
-            printOut.print(entry.getValue());
-            printOut.flush();
+
+            ByteArrayOutputStream os = entry.getValue();
+            
+            os.writeTo(zipOut);
+
             zipOut.closeEntry();
         }
 
@@ -71,10 +78,11 @@ public class Decompiler {
         return decompiled;
     }
 
-    public Map<String, String> decompile(String jarPath) throws DecompilerException, IOException {
+    public Map<String, ByteArrayOutputStream> decompile(String jarPath) throws DecompilerException, IOException {
+    	ZipFile zFile = new ZipFile(jarPath);
         ZipInputStream zip = new ZipInputStream(new FileInputStream(jarPath));
         ZipEntry ze;
-        Map<String, String> pathToSrc = new HashMap<String, String>();
+        Map<String, ByteArrayOutputStream> pathToSrc = new HashMap<String, ByteArrayOutputStream>();
         CaseInsensitiveFilePathSet caseInsensitiveSet = new CaseInsensitiveFilePathSet();
 
         Scanner in = new Scanner(zip);
@@ -92,14 +100,26 @@ public class Decompiler {
                         }
                     }
                     caseInsensitiveSet.add(javaPath);
-                    pathToSrc.put(javaPath, decompiler.decompile(jarPath, classPath));
+                    
+                    String sourceCode = decompiler.decompile(jarPath, classPath);
+                    
+                    ByteArrayOutputStream os = new ByteArrayOutputStream();
+                    os.write(sourceCode.getBytes());
+                    
+                    pathToSrc.put(javaPath, os);
                 }
             } else if( !ze.isDirectory() ) {
-                StringBuilder entry = new StringBuilder();
-                while(in.hasNextLine()) {
-                    entry.append(in.nextLine()).append('\n');
+                
+                InputStream is = zFile.getInputStream(ze);
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                
+                int i;                
+                while ((i = is.read()) != -1)
+                {
+                	os.write(i);
                 }
-                pathToSrc.put(ze.getName(), entry.toString());
+                
+                pathToSrc.put(ze.getName(), os);
             }
         }
 
