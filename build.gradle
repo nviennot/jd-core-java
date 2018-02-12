@@ -8,12 +8,12 @@ archivesBaseName = 'jd-core-java'
 version = '1.2'
 group = 'jd.core'
 
-def JD_INTELLIJ_REPO_URL = 'https://bitbucket.org/bric3/jd-intellij'
+def JD_INTELLIJ_REPO_URL = 'https://github.com/bric3/jd-intellij'
 
 // Fetch the native libraries
 task getNativeLibs(type: Exec) {
 	workingDir projectDir
-	commandLine 'hg', 'clone', JD_INTELLIJ_REPO_URL, '-r', 'version-0.6'
+	commandLine 'git', 'clone', JD_INTELLIJ_REPO_URL, '--branch', 'version-0.6'
 }
 
 if(new File(projectDir, 'jd-intellij').exists()) {
