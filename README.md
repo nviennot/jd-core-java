@@ -9,7 +9,7 @@ IDE, and provides access to JD-Core.
 Since the Author of JD-Core is not willing to provide a library, and we all want
 to batch decompilation, this is pretty much our only option.
 
-I hope this will motivate the author to release a proper library.
+I hope this will motivate the author to release a proper library: https://github.com/java-decompiler/jd-core
 
 Supported Platforms
 -------------------
